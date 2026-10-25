@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commit-Cafe · AI 作品集</title>
+<style>
+  :root { --bg:#16161a; --panel:#1f1f25; --line:#33333c; --fg:#d8d6cd; --dim:#8a8892; --acc:#e8c46a; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--fg); font-family:"Microsoft YaHei",system-ui,sans-serif; min-height:100vh; }
+  header { text-align:center; padding:72px 20px 12px; }
+  h1 { font-size:40px; letter-spacing:12px; text-indent:12px; font-weight:700; }
+  h1 .b { color:#f5f3ea; } h1 .w { color:#8a8892; }
+  .sub { color:var(--dim); margin-top:10px; font-size:14px; letter-spacing:4px; }
+  .grid { max-width:960px; margin:48px auto 80px; padding:0 24px; display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:22px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; text-decoration:none; color:var(--fg); display:block; transition:transform .18s, border-color .18s; }
+  .card:hover { transform:translateY(-5px); border-color:#5a5a68; }
+  .art { height:170px; background:#1a1a1f; position:relative; overflow:hidden; }
+  .art .floor { position:absolute; left:0; right:0; bottom:0; height:26px; background:#202026; border-top:1px solid #2b2b33; }
+  .pillar { position:absolute; bottom:26px; width:26px; border-radius:3px; transform-origin:bottom; animation:breathe 3.2s ease-in-out infinite; }
+  .pillar.blk { background:linear-gradient(#5c5c69,#3a3a44); }
+  .pillar.wht { background:linear-gradient(#f2efe6,#b9b6aa); }
+  @keyframes breathe { 0%,100% { height:22px; } 50% { height:74px; } }
+  .ring { position:absolute; bottom:30px; width:34px; height:12px; border:2.5px solid var(--acc); border-radius:50%; opacity:.85; animation:ringpulse 3.2s ease-in-out infinite; }
+  @keyframes ringpulse { 0%,100% { transform:scale(.92); opacity:.5; } 50% { transform:scale(1.06); opacity:.95; } }
+  .pawn { position:absolute; bottom:76px; width:15px; height:15px; border-radius:50%; animation:float 3.2s ease-in-out infinite; }
+  .pawn.pw { background:#f5f3ea; } .pawn.pb { background:#15151a; border:1.5px solid #777; }
+  @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-14px); } }
+  .info { padding:18px 20px 20px; }
+  .info h2 { font-size:19px; margin-bottom:6px; }
+  .info p { font-size:13px; color:var(--dim); line-height:1.7; min-height:44px; }
+  .tags { margin-top:12px; display:flex; flex-wrap:wrap; gap:6px; }
+  .tag { font-size:11px; color:var(--acc); border:1px solid #4a4030; border-radius:10px; padding:2px 10px; }
+  .play { margin-top:14px; font-size:13px; color:var(--acc); letter-spacing:2px; }
+  .card:hover .play { text-decoration:underline; }
+  .soon { border-style:dashed; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:300px; color:var(--dim); }
+  .soon .plus { font-size:40px; color:#4a4a55; margin-bottom:12px; }
+  .soon p { font-size:13px; letter-spacing:3px; }
+  footer { text-align:center; color:#5a5a64; font-size:12px; padding-bottom:48px; letter-spacing:2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="b">AI</span> <span class="w">作 品 集</span></h1>
+  <div class="sub">Commit-Cafe · 与 AI 协作创造的数字作品</div>
+</header>
+
+<div class="grid" id="grid"></div>
+
+<footer>每个作品，都是一次人机协作的对话</footer>
+
+<script>
+// 作品数据：新作品在此追加一条即可
+const works = [
+  {
+    title: '黑白柱 · 推箱子 PLUS 3D',
+    desc: '黑白双棋协作解谜：升降柱互换相位，推柱换位为对方铺路。6 个锁链关卡全部经过求解器与单机不可达双重验证。',
+    url: 'https://commit-cafe.github.io/heibaixiang-gamedemo/',
+    tags: ['three.js', '解谜', 'Web Audio'],
+    art: 'chess',
+  },
+];
+
+const grid = document.getElementById('grid');
+for (const w of works) {
+  const a = document.createElement('a');
+  a.className = 'card'; a.href = w.url; a.target = '_blank';
+  a.innerHTML = `
+    <div class="art">
+      ${w.art === 'chess' ? `
+        <div class="pillar blk" style="left:34px;  animation-delay:0s"></div>
+        <div class="pillar wht" style="left:76px;  animation-delay:.4s"></div>
+        <div class="pillar blk" style="left:118px; animation-delay:.8s; height:52px; animation:none"></div>
+        <div class="pillar wht" style="left:160px; animation-delay:1.2s"></div>
+        <div class="pillar blk" style="left:202px; animation-delay:1.6s"></div>
+        <div class="ring"  style="left:112px"></div>
+        <div class="pawn pw" style="left:40px;  animation-delay:.2s"></div>
+        <div class="pawn pb" style="left:205px; animation-delay:1.4s"></div>` : ''}
+      <div class="floor"></div>
+    </div>
+    <div class="info">
+      <h2>${w.title}</h2>
+      <p>${w.desc}</p>
+      <div class="tags">${w.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      <div class="play">▶ 在浏览器中游玩</div>
+    </div>`;
+  grid.appendChild(a);
+}
+const soon = document.createElement('div');
+soon.className = 'card soon';
+soon.innerHTML = `<div class="plus">+</div><p>下一个作品，正在酝酿</p>`;
+grid.appendChild(soon);
+</script>
+</body>
+</html>
